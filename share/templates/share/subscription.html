@@ -1,0 +1,70 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'share/base.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'share/dashboard.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'share/responsive.css' %}">
+<title>User's container space</title>
+
+<div class=" dashboard" data-admin-utc-offset="0">
+    <div id="container">
+        <!-- Header -->
+        <div id="header">
+            <div id="branding">
+                <h1 id="site-name"><a href="{% url 'share:info' %}">Subscriptions</a></h1>
+            </div>
+
+            <div id="user-tools">
+                Welcome,
+                <strong>{{ login_user.name }}</strong>.
+                <a href="{% url 'share:info' %}">User space</a> /
+
+                <a href="{% url 'share:register' %}">User register</a>/
+
+                <a href="{% url 'share:configureSubscription' %}">User subscription</a>
+
+                {#                <a href="http://tsuna.xyz:8088/admin/logout/">Log out</a>#}
+            </div>
+        </div>
+        <!-- END Header -->
+
+        <div class="app-share module">
+            <table>
+                <caption>
+                    <a href="#" class="section"
+                       title="{{ login_user.name }}'s subscriptions">{{ login_user.name }}'s
+                        subscriptions</a>
+                </caption>
+                <tbody>
+                {% if users %}
+                    <ul>
+                        {% for user in users %}
+                            <tr class="model-container">
+                                {% if user != login_user %}
+                                    <th scope="row"><a
+                                            href="#">{{ user.name }}</a>
+                                    </th>
+
+                                    {% if user in subscripters %}
+                                        <td><a href="{% url 'share:deleteUser' user.id %}"
+                                               class="changelink">DELETE</a></td>
+
+                                    {% else %}
+                                        <td><a href="{% url 'share:addUser' user.id %}"
+                                               class="changelink">SUBSCRIPTION</a></td>
+
+                                    {% endif %}
+
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No user available</p>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+

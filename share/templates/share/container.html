@@ -1,0 +1,33 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'share/bootstrap/css/bootstrap.min.css' %}">
+<script src="{% static 'share/jquery.min.js' %}"></script>
+<script src="{% static 'share/bootstrap/js/bootstrap.min.js' %}"></script>
+{#<h1>Hello,{{ image.serial_number }}</h1>#}
+<a href="{% url 'share:info' %}">Go back</a>
+{% if error_message %}
+    <p><strong>{{ error_message }}</strong></p>
+{% else %}
+{#    {{ image }}#}
+{#    {{ container }}#}
+    <button class="btn btn-primary" type="button" id="close_container">Close the container</button>
+    <label for="description">Description</label>
+    <input type="text" name="description" required="" id="description">
+    <button class="btn btn-primary" type="button" id="close_and_submit">Close and submit</button>
+    <iframe src="http://tsuna.xyz:{{ port_num }}" width="100%" height="1080">
+        <p>Your browser didn't support iframe</p>
+    </iframe>
+    <script>
+        $(document).ready(function () {
+            $("#close_container").click(function () {
+                $.get("{% url 'share:stop_container' container_num  %}")
+            });
+            {#$("#close_and_submit").click(#}
+            {#    function () {#}
+            {#        $.get("{% url 'share:commit_stop_container' container_num %}"+$("#description").value);#}
+            {#    }#}
+            {#)#}
+        })
+    </script>
+{% endif %}
+
+

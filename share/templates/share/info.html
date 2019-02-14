@@ -1,0 +1,109 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'share/base.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'share/dashboard.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'share/responsive.css' %}">
+<title>User's container space</title>
+
+<div class=" dashboard" data-admin-utc-offset="0">
+    <div id="container">
+        <!-- Header -->
+        <div id="header">
+            <div id="branding">
+                <h1 id="site-name"><a href="{% url 'share:info' %}">User space</a></h1>
+            </div>
+
+            <div id="user-tools">
+                Welcome,
+                <strong>{{ user.name }}</strong>.
+                <a href="{% url 'share:info' %}">User space</a> /
+
+                <a href="{% url 'share:register' %}">User register</a>/
+
+                <a href="{% url 'share:configureSubscription' %}">User subscription</a>
+
+                {#                <a href="http://tsuna.xyz:8088/admin/logout/">Log out</a>#}
+            </div>
+        </div>
+        <!-- END Header -->
+
+        <!-- Content -->
+        <div id="content" class="colMS">
+            <h1>{{ user.name }}'s image space</h1>
+            <div id="content-main">
+                <div class="app-auth module">
+                    <table>
+                        <caption>
+                            <a href="#" class="section"
+                               title="{{ user.name }}'s own images">My own images</a>
+                        </caption>
+
+                        <tbody>
+                        {% for image in user.image_set.all %}
+                            <tr class="model-group">
+                                <th scope="row">
+                                    <a href="{% url 'share:container' image.id %}">{{ image.description }}</a>
+                                </th>
+                                <td><a href="{% url 'share:container' image.id %}"
+                                       class="changelink">{{ image.serial_number }}</a></td>
+                            </tr>
+
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                {% for subscripter in user.subscription_user.all %}
+                    <div class="app-share module">
+                        <table>
+                            <caption>
+                                <a href="#" class="section"
+                                   title="{{ subscripter.target.name }}'s images">{{ subscripter.target.name }}'s
+                                    images</a>
+                            </caption>
+                            <tbody>
+                                {% for subimage in subscripter.target.image_set.all %}
+                            <tr class="model-container">
+                                    <th scope="row"><a
+                                            href="{% url 'share:container' subimage.id %}">{{ subimage.description }}</a>
+                                    </th>
+                                    <td><a href="{% url 'share:container' subimage.id %}"
+                                           class="changelink">{{ subimage.serial_number }}</a></td>
+
+                            </tr>
+                                {% endfor %}
+                        </table>
+                    </div>
+                {% endfor %}
+            </div>
+
+
+            <div id="content-related">
+                <div class="module" id="recent-actions-module">
+                    <h2>Recent actions</h2>
+                    <h3>My actions</h3>
+
+
+                    {#                <ul class="actionlist">#}
+                    {##}
+                    {#                    <li class="deletelink">#}
+                    {#                        Container created by tsuna, using#}
+                    {#                        155478b76645a0cca4c38cf5f8b11093e0cac96c061f5beb967571cb8b26bc86#}
+                    {#                        <br>#}
+                    {#                        <span class="mini quiet">Container</span>#}
+                    {#                    </li>#}
+                    {#                    <li class="changelink">#}
+                    {#                        <a href="http://tsuna.xyz:8088/admin/share/user/3/change/">jack</a>#}
+                    {#                        <br>#}
+                    {#                        <span class="mini quiet">User</span>#}
+                    {#                    </li>#}
+                    {#                </ul>#}
+                </div>
+            </div>
+
+            <br class="clear">
+        </div>
+        <!-- END Content -->
+
+
+    </div>
+</div>
